@@ -1,6 +1,7 @@
 namespace SpriteKind {
     export const coin = SpriteKind.create()
     export const fin = SpriteKind.create()
+    export const bait = SpriteKind.create()
 }
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile0`, function (sprite, location) {
     game.gameOver(false)
@@ -8,11 +9,90 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile0`, function (sprite, l
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile1`, function (sprite, location) {
     game.gameOver(true)
 })
+controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
+    sprites.destroy(projectile2)
+    projectile2 = sprites.createProjectileFromSprite(img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        `, hops, 100, 0)
+    animation.runImageAnimation(
+    projectile2,
+    [img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . 2 2 . . . . . . . 
+        . . . . . . . . 2 2 2 . . . . . 
+        . . . . . . 4 4 2 2 2 2 . . . . 
+        . . . . 4 4 2 2 4 5 2 2 2 . . . 
+        . 2 2 2 4 5 5 5 4 2 5 4 2 . . . 
+        . . . . 2 2 4 5 2 5 4 2 4 . . . 
+        . . . . . . 2 2 5 4 4 4 4 . . . 
+        . . . . . . . . 2 2 4 . . . . . 
+        . . . . . 4 4 4 4 4 . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        `,img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . 2 2 . . . . . . . . 
+        . . . . . 5 5 2 2 . . . . . . . 
+        . . . . . . . 5 5 5 2 2 . . . . 
+        . . . . . . 4 4 2 5 5 5 . . . . 
+        . . . . 4 4 2 2 4 5 2 5 2 . . . 
+        . 2 2 2 4 5 5 5 4 2 5 5 2 . . . 
+        . . . . 2 2 4 5 2 5 4 5 4 . . . 
+        . . . . . . 2 2 5 4 5 4 4 . . . 
+        . . . . . . . . 2 2 5 . . . . . 
+        . . . . . 4 5 5 5 5 5 . . . . . 
+        . . . . 4 5 5 4 4 4 . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        `,img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . 4 4 4 4 . . . . . 
+        . . . . . 4 4 2 5 5 2 4 . . . . 
+        . . . 4 4 2 2 4 5 2 5 2 4 . . . 
+        2 2 2 4 5 5 5 4 4 2 2 5 4 2 . . 
+        . . . 2 2 4 5 2 2 4 5 4 2 . . . 
+        . . . . . 2 2 5 5 5 4 2 . . . . 
+        . . . . . . . 2 2 2 2 . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        `],
+    200,
+    true
+    )
+})
 sprites.onOverlap(SpriteKind.Player, SpriteKind.coin, function (sprite, otherSprite) {
     info.changeScoreBy(1)
     sprites.destroy(otherSprite)
 })
-sprites.onOverlap(SpriteKind.Player, SpriteKind.fin, function (sprite, otherSprite) {
+sprites.onOverlap(SpriteKind.Player, SpriteKind.bait, function (sprite, otherSprite) {
+    sprites.destroy(otherSprite)
     fish = sprites.create(img`
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
@@ -32,19 +112,19 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.fin, function (sprite, otherSpri
         . . . . . . . . . . . . . . . . 
         `, SpriteKind.Enemy)
     animation.runImageAnimation(
-    fin,
+    fish,
     [img`
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
-        . . . f f f f f f . . . f f . . 
-        . f f 4 4 4 4 4 4 f . f 4 f . . 
-        f 4 4 4 4 4 4 4 4 4 f 4 4 f . . 
-        f 4 4 f 4 4 4 4 4 4 f 4 4 f . . 
-        f 4 4 4 4 4 4 4 4 4 f f 4 f . . 
-        . f 4 4 4 4 4 4 4 f . . f f . . 
-        . . f f f f f f f . . . . . . . 
         . . . . . . . . . . . . . . . . 
+        . . . . f f f f f . . . f f . . 
+        . . f f 4 4 4 4 4 f . f 4 f . . 
+        . f 4 4 4 4 4 4 4 4 f 4 4 f . . 
+        . f 4 f 4 4 4 4 4 4 f 4 4 f . . 
+        . f 4 4 4 4 4 4 4 4 f f 4 f . . 
+        . . f 4 4 4 4 4 4 f . . f f . . 
+        . . . f f f f f f . . . . . . . 
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
@@ -54,28 +134,59 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.fin, function (sprite, otherSpri
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
-        . . . f f f f f f . . . . . . . 
-        . f f 4 4 4 4 4 4 f . . . . . . 
-        f 4 4 4 4 4 4 4 4 4 f . . . . . 
-        f 4 4 f 4 4 4 4 4 4 f . . . . . 
-        f 4 4 4 4 4 4 4 4 4 f . . . . . 
-        . f 4 4 4 4 4 4 4 f . . . . . . 
-        . . f f f f f f f . . . . . . . 
         . . . . . . . . . . . . . . . . 
+        . . . . f f f f f . . . . . . . 
+        . . f f 4 4 4 4 4 f . . . . . . 
+        . f 4 4 4 4 4 4 4 4 f . . . . . 
+        . f 4 f 4 4 4 4 4 4 f . . . . . 
+        . f 4 4 4 4 4 4 4 4 f . . . . . 
+        . . f 4 4 4 4 4 4 f . . . . . . 
+        . . . f f f f f f . . . . . . . 
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
         `],
-    500,
+    100,
     true
     )
+    fish.setPosition(hops.x + 80, hops.y + 80)
+    fish.follow(hops)
 })
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
+    sprites.destroy(otherSprite)
+    projectile = sprites.createProjectileFromSprite(img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . f f f f f f . . . . . . 
+        . . . . f 4 4 4 4 f . . . . . . 
+        . . . . . f 4 4 f . . . . . . . 
+        . . . . . . f f f . . . . . . . 
+        . . . . . f 4 4 4 f . . . . . . 
+        . . . . f 4 4 4 4 4 f . . . . . 
+        . . . . f 4 4 4 4 4 f . . . . . 
+        . . . . f 4 4 4 4 4 f . . . . . 
+        . . . . f 4 4 f 4 4 f . . . . . 
+        . . . . f 4 f f f 4 f . . . . . 
+        . . . . . f 4 f 4 4 f . . . . . 
+        . . . . . f 4 4 4 f . . . . . . 
+        . . . . . . f f f . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        `, fish, 50, 50)
+    if (hops.y < otherSprite.y) {
+        info.changeScoreBy(3)
+    } else {
+        info.changeLifeBy(-1)
+    }
+})
+let projectile: Sprite = null
 let fish: Sprite = null
-let fin: Sprite = null
+let projectile2: Sprite = null
+let bait: Sprite = null
+let hops: Sprite = null
 scene.setBackgroundColor(8)
-let coin = sprites.create(img`
+hops = sprites.create(img`
     ...........44.......
     ...........4........
     ...........2........
@@ -93,11 +204,12 @@ let coin = sprites.create(img`
     ...44.2222222222222.
     .......22222222222..
     `, SpriteKind.Player)
-controller.moveSprite(coin, 100, 100)
+controller.moveSprite(hops, 100, 100)
 tiles.setCurrentTilemap(tilemap`level1`)
-scene.cameraFollowSprite(coin)
+scene.cameraFollowSprite(hops)
+info.setLife(5)
 for (let value of tiles.getTilesByType(assets.tile`myTile2`)) {
-    coin = sprites.create(img`
+    bait = sprites.create(img`
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
         . . . . f f f f f f f . . . . . 
@@ -116,7 +228,7 @@ for (let value of tiles.getTilesByType(assets.tile`myTile2`)) {
         . . . . . . . . . . . . . . . . 
         `, SpriteKind.coin)
     animation.runImageAnimation(
-    coin,
+    bait,
     [img`
         . . . . . . . . . . . . . . . . 
         . . . . f f f f f f f . . . . . 
@@ -342,28 +454,28 @@ for (let value of tiles.getTilesByType(assets.tile`myTile2`)) {
     100,
     true
     )
-    tiles.placeOnTile(coin, value)
+    tiles.placeOnTile(bait, value)
     tiles.setTileAt(value, assets.tile`transparency16`)
 }
 for (let value of tiles.getTilesByType(assets.tile`myTile3`)) {
-    fin = sprites.create(img`
+    bait = sprites.create(img`
         9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 
         9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 
         9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 
         9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 
-        9 9 9 9 9 9 9 9 9 9 9 9 9 9 f 9 
-        9 9 f 9 9 9 9 9 9 9 9 f 9 9 f 9 
-        9 9 f 9 9 9 9 9 9 9 9 9 9 9 f 9 
-        9 9 f f f 9 f f f 9 9 f 9 f f f 
-        9 9 f 9 f 9 f 9 f 9 9 f 9 9 f 9 
-        9 9 f f f 9 f f f 9 9 f 9 9 f 9 
-        9 9 9 9 9 9 9 9 f 9 9 f 9 9 f 9 
+        9 9 f 9 9 9 9 9 9 9 f 9 9 f 9 9 
+        9 9 f 9 9 9 9 9 9 9 9 9 9 f 9 9 
+        9 9 f f f 9 f f f 9 f 9 f f f 9 
+        9 9 f 9 f 9 f 9 f 9 f 9 9 f 9 9 
+        9 9 f f f 9 f f f 9 f 9 9 f 9 9 
+        9 9 9 9 9 9 9 9 f 9 9 9 9 9 9 9 
         9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 
         9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 
         9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 
         9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 
         9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 
-        `, SpriteKind.fin)
-    tiles.placeOnTile(fin, value)
+        9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 
+        `, SpriteKind.bait)
+    tiles.placeOnTile(bait, value)
     tiles.setTileAt(value, assets.tile`transparency16`)
 }
